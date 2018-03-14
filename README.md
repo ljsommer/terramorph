@@ -1,6 +1,6 @@
 # terramorph
 
-![alt text](https://github.com/ljsommer/terramorph/terramorph.png)
+![alt text](https://raw.githubusercontent.com/ljsommer/terramorph/terramorph.png)
 
 Abstraction tooling built in Docker for Terraform.
 
