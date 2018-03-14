@@ -22,7 +22,7 @@ container_name="terramorph"
 image_name="terramorph"
 
 echo "Building Docker image: $image_name with Terraform version: $terraform_version"
-docker build -t $image_name ./docker
+docker build -t $image_name --build-arg terraform_version=$terraform_version ./docker
 
 docker run -i -t --rm \
     --name $image_name \
