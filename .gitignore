@@ -105,3 +105,6 @@ celerybeat-schedule
 
 # mypy
 .mypy_cache/
+
+# Terraform
+.terraform/
