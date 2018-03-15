@@ -3,11 +3,19 @@
 terraform_version="0.11.3"
 
 echo "Building Docker image: terramorph with Terraform version: $terraform_version"
-docker build -t $image_name --build-arg terraform_version=$terraform_version ./docker
+#docker build -t $image_name --build-arg terraform_version=$terraform_version ./docker
 
 function terramorph () {
+    if [[ -z "${TERRAFORM_ENV}" ]]; then
+        echo "TERRAFORM_ENV environment variable not set. Please set and re-run."
+        return 1
+    else
+        printf "Terraform environment recognized as ${TERRAFORM_ENV}\n\n"
+    fi
+
     docker run -i -t --rm \
         --name terramorph \
+        -e "TERRAFORM_ENV=$TERRAFORM_ENV" \
         -v ${HOME}/.aws/:/root/.aws/ \
         -v ${HOME}/.ssh/:/root/.ssh/ \
         -v $(pwd):/opt/terramorph/code/ \
