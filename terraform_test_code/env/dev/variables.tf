@@ -1,3 +1,7 @@
+variable "aws_profile" {
+  default = "ljsommer"
+}
+
 variable "azs" {
   default = [
     "us-west-2a",
@@ -16,6 +20,10 @@ variable "private_subnets" {
     "10.0.2.0/24",
     "10.0.3.0/24"
   ]
+}
+
+variable "region" {
+  default = "us-west-2"
 }
 
 variable "public_subnets" {
