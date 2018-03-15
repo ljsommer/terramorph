@@ -14,6 +14,8 @@ function terramorph () {
         terramorph "$1"
 }
 
+alias tm=terramorph
+
 if [[ ! -s "$HOME/.bash_profile" && -s "$HOME/.profile" ]] ; then
   profile_file="$HOME/.profile"
 else
