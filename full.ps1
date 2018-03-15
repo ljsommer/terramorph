@@ -17,11 +17,19 @@ $image_name="terramorph"
 
 echo "Building Docker image: $image_name with Terraform version: ${terraform_version}"
 docker build -t $image_name --build-arg terraform_version=$terraform_version ./docker
+Function Run-Terramorph
+{
+    docker run -i -t --rm `
+        --name $image_name `
+        -v "$local_aws_dir`:$container_aws_dir" `
+        -v "$local_ssh_dir`:$container_ssh_dir" `
+        -e "AWS_DEFAULT_REGION=$aws_default_region" `
+        -e "log_level=$loglevel" `
+        $image_name
+}
 
-docker run -i -t --rm `
-    --name $image_name `
-    -v "$local_aws_dir`:$container_aws_dir" `
-    -v "$local_ssh_dir`:$container_ssh_dir" `
-    -e "AWS_DEFAULT_REGION=$aws_default_region" `
-    -e "log_level=$loglevel" `
-    $image_name
+# Set an alias for use in the current Powershell terminal so we don't have to reload
+Set-Alias -Name terramorph -Value Run-Terramorph -Description "Launches Terramorph container"
+
+# 
+Out-File
