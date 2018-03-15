@@ -1,4 +1,4 @@
 provider "aws" {
-  profile = "ljsommer_windows"
+  profile = "ljsommer"
   region  = "us-west-2"
 }

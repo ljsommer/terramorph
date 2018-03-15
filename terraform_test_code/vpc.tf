@@ -2,7 +2,7 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "${var.vpc_name}"
-  cidr = "${var.network.vpc_cidr}"
+  cidr = "${var.vpc_cidr}"
 
   azs             = "${var.azs}"
   private_subnets = "${var.private_subnets}"
