@@ -5,5 +5,6 @@ ADD "https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${t
 RUN mkdir -p /opt/terramorph/code
 RUN unzip /tmp/terraform_${terraform_version}_linux_amd64.zip -d /opt/terramorph
 
+# This is the directory that the Terraform context gets mounted into
 WORKDIR "/opt/terramorph/code"
-ENTRYPOINT ["/opt/terramorph/terraform"]
+ENTRYPOINT ["python", "/app/src/terramorph/main.py"]
