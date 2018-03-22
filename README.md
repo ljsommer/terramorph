@@ -2,6 +2,20 @@
 
 ![terramorph](https://github.com/ljsommer/terramorph/blob/master/terramorph.png?raw=true)
 
+## Usage
+Windows:
+*Note: Ensure your execution policy is configured to allow remote execution:*
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6
+```
+. ./full.ps1
+terramorph
+```
+
+Linux/Mac:
+```
+source ./full.sh
+```
+
 Abstraction tooling built in Docker for Terraform.
 
 The name of this tool is obviously pulled from Terraform, but I needed a spin on the name and thought of one of my favorite games, Final Fantasy 6 (3) and the character Terra, who has the ability to morph into a creature thus gaining new powers.
