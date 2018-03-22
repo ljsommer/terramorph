@@ -3,10 +3,8 @@
 Terraform functionality wrapper utility
 """
 import os
-import ec2
 import library
 import logger
-import setup
 
 def main():
     """Main entry point"""
