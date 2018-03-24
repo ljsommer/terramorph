@@ -9,11 +9,14 @@ https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security
 ```
 . ./full.ps1
 terramorph
+tm
 ```
 
 Linux/Mac:
 ```
 source ./full.sh
+terramorph
+tm
 ```
 
 Abstraction tooling built in Docker for Terraform.
@@ -29,3 +32,7 @@ Modules, while highly recommended, are not necessary for this tool to function.
 * Libary: An environment directory inside a segment which contains relevant configuration files for an environment
 
 
+## Development
+* Currently the logging level (to the python) is being passed in the full.* files. This is not ideal, but I don't want to spend a lot of time on that right now.
+
+* Windows ENV's are frustrating and time consuming, so for the time being I am handling a lot in the .ps1 file.

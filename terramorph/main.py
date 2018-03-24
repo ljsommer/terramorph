@@ -2,20 +2,22 @@
 """
 Terraform functionality wrapper utility
 """
-import os
+import environment
 import library
 import logger
+import os
+import sys
+import terraform
+
 
 def main():
     """Main entry point"""
     log = logger.create_logger()
 
-    def str_to_bool(string):
-        """Convert string to boolean"""
-        return bool(string == 'True')
+    env = environment.name()
+    argument = environment.validate_argument(sys.argv)
 
-    library.setup()
-
+    #library.setup()
+    terraform.execute(argument, env)
     
-
 main()
