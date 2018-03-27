@@ -7,7 +7,8 @@ import sys
 def name():
     log = logger.create_logger()
     # Read directory structure here
-    env = "dev"
+    env = os.environ['TM_ENV']
+    log.debug("Environment read from TM_ENV variable as %s", env)
     return env
 
 def validate_argument(argv):
@@ -17,7 +18,7 @@ def validate_argument(argv):
     Pulled from: https://www.terraform.io/docs/commands/index.html
     '''
     supported_args = [
-        'apply', 'destroy', 'fmt', 'init', 'plan', 'version'
+        'apply', 'destroy', 'help', 'fmt', 'init', 'plan', 'version'
     ]
 
     unsupported_args = [

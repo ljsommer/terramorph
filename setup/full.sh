@@ -1,37 +1,61 @@
 #! /bin/bash
 
+image_name="terramorph"
 terraform_version="0.11.3"
 
-echo "Building Docker image: terramorph with Terraform version: $terraform_version"
-#docker build -t $image_name --build-arg terraform_version=$terraform_version ./docker
+echo "Building Docker image: $image_name with Terraform version: $terraform_version"
+docker build -t $image_name --build-arg terraform_version=$terraform_version ..
 
 function terramorph () {
-    if [[ -z "${TERRAFORM_ENV}" ]]; then
-        echo "TERRAFORM_ENV environment variable not set. Please set and re-run."
+    if [[ -z "${TM_ENV}" ]]; then
+        echo "TM_ENV environment variable not set. Please set and re-run."
         return 1
     else
-        printf "Terraform environment recognized as ${TERRAFORM_ENV}\n\n"
+        printf "TM_ENV (environment for Terramorph execution) recognized as ${TM_ENV}\n"
     fi
 
-    docker run -i -t --rm \
-        --name terramorph \
-        -e "TERRAFORM_ENV=$TERRAFORM_ENV" \
+    if [[ -z "${TM_LOG_LEVEL}" ]]; then
+        echo "TM_LOG_LEVEL environment variable not set. Using default 'info'."
+        return 1
+    else
+        printf "TM_LOG_LEVEL (log level output for Terramorph) recognized as ${TM_LOG_LEVEL}\n\n"
+    fi
+
+    if [ $# -eq 0 ] ; then
+        tm_argument="help"
+    else
+        tm_argument=$1
+    fi
+    
+    docker run -i -t \
+        -e "TM_LOG_LEVEL=$TM_LOG_LEVEL" \
+        -e "TM_ENV=$TM_ENV" \
         -v ${HOME}/.aws/:/root/.aws/ \
         -v ${HOME}/.ssh/:/root/.ssh/ \
         -v $(pwd):/opt/terramorph/code/ \
-        terramorph "$1"
+        terramorph $tm_argument
 }
 
-alias tm=terramorph
-
 if [[ ! -s "$HOME/.bash_profile" && -s "$HOME/.profile" ]] ; then
-  profile_file="$HOME/.profile"
+    profile_file="$HOME/.profile"
 else
-  profile_file="$HOME/.bash_profile"
+    profile_file="$HOME/.bash_profile"
 fi
 
+terramorph_function_file="$HOME/.terramorph.sh"
+
+# If the Terramorph function file exists, delete it before recreating it
+[ -e $terramorph_function_file ] && rm $terramorph_function_file
+echo "function $(declare -f terramorph)"  >> "${terramorph_function_file}"
+echo "alias tm=terramorph" >> "${terramorph_function_file}"
+
+# Configure profile to load the terramorph function file 
 if ! grep -q 'terramorph' "${profile_file}" ; then
-  echo "Editing ${profile_file} to configure Terramorph function on terminal launch"
-  echo "function $(declare -f terramorph)"  >> "${profile_file}"
-  echo "alias tp=terramorph" >> "${profile_file}"
+    echo "Editing ${profile_file} to configure Terramorph function on terminal launch"
+    echo "" >> "${profile_file}"
+    echo "###" >> "${profile_file}"
+    echo "# Terramorph" >> "${profile_file}"
+    echo "###" >> "${profile_file}"
+    echo "source ${terramorph_function_file}" >> "${profile_file}"
+    echo "echo \"Loaded ${terramorph_function_file}\"" >> "${profile_file}"
 fi

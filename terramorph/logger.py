@@ -8,7 +8,7 @@ def create_logger():
     logging.getLogger('boto3').setLevel(logging.CRITICAL)
     logging.getLogger('botocore').setLevel(logging.CRITICAL)
 
-    log_level = os.environ['log_level']
+    log_level = os.environ['TM_LOG_LEVEL']
     numeric_level = getattr(logging, log_level.upper(), None)
 
     if not isinstance(numeric_level, int):
