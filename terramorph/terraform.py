@@ -9,8 +9,8 @@ def execute(argument, env):
 
     binary = "/opt/terramorph/terraform"
     if not argument:
-        log.debug("Executing %s (no argument passed) within the %s environment.", binary, env)
+        log.info("Executing %s (no argument passed) within the %s environment.", binary, env)
     else:
-        log.debug("Executing %s %s within the %s environment.", binary, argument, env)
+        log.info("Executing %s %s within the %s environment.", binary, argument, env)
 
     call([binary, argument])
