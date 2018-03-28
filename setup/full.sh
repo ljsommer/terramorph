@@ -27,7 +27,7 @@ function terramorph () {
         tm_argument=$1
     fi
     
-    docker run -i -t \
+    docker run -i -t --rm \
         -e "TM_LOG_LEVEL=$TM_LOG_LEVEL" \
         -e "TM_ENV=$TM_ENV" \
         -v ${HOME}/.aws/:/root/.aws/ \
