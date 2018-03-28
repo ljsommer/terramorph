@@ -59,3 +59,5 @@ if ! grep -q 'terramorph' "${profile_file}" ; then
     echo "source ${terramorph_function_file}" >> "${profile_file}"
     echo "echo \"Loaded ${terramorph_function_file}\"" >> "${profile_file}"
 fi
+
+source $terramorph_function_file
