@@ -9,13 +9,12 @@ import time
 
 '''
 Check environment out of library:
-    Create symlinks to all files in env directory
     Move .terraform library directory into working directory:
         * terraform.tfstate file 
         * downloaded modules
         * downloaded plugins
 '''
-def checkout(code_dir, env_name):
+def checkout_environment(code_dir, env_name):
     log = logger.create_logger()
     env_dir = join(code_dir, 'env', env_name)
     log.debug("Env_dir: %s", env_dir)
@@ -33,7 +32,15 @@ def checkout(code_dir, env_name):
         shutil.copytree(existing_library_dir, terraform_dir)
         shutil.rmtree(existing_library_dir)
 
-    # Symlinks
+'''
+Check symlinks out of library:
+    Create symlinks to all files in env directory
+'''
+def checkout_symlinks(code_dir, env_name):
+    log = logger.create_logger()
+    env_dir = join(code_dir, 'env', env_name)
+    log.debug("Env_dir: %s", env_dir)
+
     symlink_targets = [f for f in listdir(env_dir) if isfile(join(env_dir, f))]
     log.debug("Files to be symlinked: %s", symlink_targets)
     symlinks = []

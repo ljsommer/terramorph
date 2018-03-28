@@ -22,7 +22,8 @@ def main():
 
     try:
         library.orphanage(code_dir)
-        symlinks = library.checkout(code_dir, env)
+        library.checkout_environment(code_dir, env)
+        symlinks = library.checkout_symlinks(code_dir, env)
         terraform.execute(argument, env)
     finally:
         library.cleanup(code_dir, env, symlinks)
