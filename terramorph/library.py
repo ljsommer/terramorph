@@ -99,14 +99,14 @@ def orphanage(code_dir):
     orphanage_dir = join(code_dir, '.terramorph/', 'orphanage/')
     orphan_tf_dir = join(code_dir, ".terraform/")
 
-    # Get last modified time of .terraform/ directory for name
-    orphan_tf_dir_timestamped = time.strftime(
-        '%m-%d-%Y-%T', time.gmtime(getmtime(orphan_tf_dir))
-    )
-    orphan_dir_name = 'terraform-' + orphan_tf_dir_timestamped
-    orphan_dest_path = join(orphanage_dir, orphan_dir_name)
-
     if isdir(orphan_tf_dir):
+        # Get last modified time of .terraform/ directory for name
+        orphan_tf_dir_timestamped = time.strftime(
+            '%m-%d-%Y-%T', time.gmtime(getmtime(orphan_tf_dir))
+        )
+        orphan_dir_name = 'terraform-' + orphan_tf_dir_timestamped
+        orphan_dest_path = join(orphanage_dir, orphan_dir_name)
+
         log.warn("A .terraform directory was found that is not managed by Terramorph.")
         log.warn("Moving and renaming .terraform/ to: %s", orphan_dest_path)
         if not exists(orphanage_dir):
