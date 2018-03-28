@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import logger
+from . import logger
 from os import listdir, makedirs, symlink, remove, rename
 from os.path import abspath, exists, isdir, islink, getmtime, isfile, join
 import shutil

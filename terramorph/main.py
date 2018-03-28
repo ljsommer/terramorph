@@ -2,9 +2,9 @@
 """
 Terraform functionality wrapper utility
 """
-import environment
-import library
-import logger
+from . import environment
+from . import library
+from . import logger
 import os
 import sys
 import terraform
