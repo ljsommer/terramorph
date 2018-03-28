@@ -23,7 +23,8 @@ def checkout(code_dir, env_name):
     # Library directory
     terraform_dir = join(code_dir, '.terraform/')
     terramorph_dir = join(code_dir, '.terramorph/')
-    existing_library_dir = join(terramorph_dir, env_name)
+    terramorph_env_dir = join(terramorph_dir, 'environments')
+    existing_library_dir = join(terramorph_env_dir, env_name)
 
     if isdir(existing_library_dir):
         log.info("Existing libary directory found for environment: %s", env_name)
@@ -78,7 +79,8 @@ def cleanup(code_dir, env_name, symlinks):
 
     terraform_dir = join(code_dir, '.terraform/')
     terramorph_dir = join(code_dir, '.terramorph/')
-    existing_library_dir = join(terramorph_dir, env_name)
+    terramorph_env_dir = join(terramorph_dir, 'environments')
+    existing_library_dir = join(terramorph_env_dir, env_name)
 
     if isdir(terraform_dir):
         log.debug(
