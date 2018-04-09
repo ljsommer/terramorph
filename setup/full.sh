@@ -1,10 +1,19 @@
 #! /bin/bash
 
+ansible_version="2.5.0"
 image_name="terramorph"
 terraform_version="0.11.3"
 
-echo "Building Docker image: $image_name with Terraform version: $terraform_version"
-docker build -t $image_name --build-arg terraform_version=$terraform_version ..
+echo ""
+echo "Building Docker image: $image_name with Ansible and Terraform"
+echo "   Ansible version: $ansible_version"
+echo "   Terraform version: $terraform_version"
+echo ""
+
+docker build -t $image_name \
+    --build-arg ansible_version=$ansible_version \
+    --build-arg terraform_version=$terraform_version \
+    ..
 
 function terramorph () {
     if [[ -z "${TM_ENV}" ]]; then

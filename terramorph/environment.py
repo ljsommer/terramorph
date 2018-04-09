@@ -21,6 +21,8 @@ def validate_argument(argv):
         'apply', 'destroy', 'help', 'fmt', 'init', 'plan', 'version'
     ]
 
+    # Not yet used but wanna keep it around
+    '''
     unsupported_args = [
         'console',
         'get',
@@ -36,6 +38,7 @@ def validate_argument(argv):
         'validate',
         'workspace'
     ]
+    '''
 
     if len(argv) == 2:
         argument = argv[1]
@@ -53,6 +56,6 @@ def validate_argument(argv):
         sys.exit(1)
     
     else:
-        argument = ""
+        argument = "help"
 
     return argument

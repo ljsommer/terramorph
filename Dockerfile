@@ -5,6 +5,13 @@ ADD "https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${t
 RUN mkdir -p /opt/terramorph/code
 RUN unzip /tmp/terraform_${terraform_version}_linux_amd64.zip -d /opt/terramorph/
 
-# This is the directory that the Terraform context gets mounted into
-WORKDIR "/opt/terramorph/code"
-ENTRYPOINT ["python", "/app/src/terramorph/main.py"]
+ARG ansible_version
+RUN pip3 install --upgrade pip \
+    ansible==${ansible_version}
+
+RUN alias terramorph="python /app/src/terramorph/main.py"
+RUN alias tm="python /app/src/terramorph/main.py"
+
+ENV ANSIBLE_CONFIG="/app/src/terramorph/ansible/ansible.cfg"
+
+ENTRYPOINT ["/bin/sh", "/app/src/terramorph/entrypoint.sh"]

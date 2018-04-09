@@ -1,0 +1,18 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+  - name: "Deploying network layer: VPC"
+    terramorph:
+      apply_confirm: True
+      directory: "network/vpc/"
+      plan_only: False
+      state: "present"
+
+  - name: "Deploying application layer: test"
+    terramorph:
+      apply_confirm: False
+      directory: "application/test"
+      plan_only: False
+      state: "present"
