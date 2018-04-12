@@ -1,9 +1,15 @@
 #!/usr/bin/python
 
+import subprocess
+import sys
+
 DOCUMENTATION = '''
 ---
 module: terramorph
-short_description: Build a layered Terraform codebase using Terramorph
+short_description: Build a layered Terraform codebase using Terramorph. 
+"directory" attribute is relative to playbook file location.
+Note that I do not track state change for idempotence because this is an abstraction layer and state changes are tracked
+    in Terraform. I have no plans to add that functionality into the Ansible module at this time.
 '''
 
 EXAMPLES = '''
@@ -26,10 +32,36 @@ EXAMPLES = '''
 '''
 
 from ansible.module_utils.basic import *
+from ansible.module_utils.terramorph import *
+from ansible.module_utils.environment import *
+from ansible.module_utils.library import *
+from ansible.module_utils.logger import *
+from ansible.module_utils.terraform import *
 
+#PYTHON = "/usr/bin/python"
+#TM = "/app/src/terramorph/main.py"
 
-def init():
-    pass
+def init(data):
+    argument = "init"
+    directory = data['directory']
+
+    #subprocess.call([PYTHON, TM, directory, "init"], stdout=subprocess.PIPE)
+    terramorph.main(argument, directory)
+
+    '''
+    child = subprocess.Popen([PYTHON, TM, "init"], cwd= directory, stdout=subprocess.PIPE)
+    streamdata = child.communicate()[0]
+    rc = child.returncode
+    '''
+
+    #meta = {"status": rc, 'response': streamdata}
+    '''
+    if rc == 0:
+        return False, streamdata
+    if rc == 1:
+        return True, streamdata
+    '''
+    #return streamdata
 
 def plan():
     pass
@@ -44,26 +76,32 @@ def create():
     pass
 
 def main():
-
     fields = {
-        "plan_only": {"default": False, "type": "bool"},
         "apply_confirm": {"default": True, "type": "bool"},
-        "destroy_force": {"default": False, "type": "bool"}
+        "destroy_force": {"default": False, "type": "bool"},
+        "directory": {"required": True, "type": "str"},
+        "plan_only": {"default": False, "type": "bool"},
+        "state": {
+        	"default": "present", 
+        	"choices": ['present', 'absent'],  
+        	"type": 'str' 
+        }
     }
 
     choice_map = {
-        "present": create,
-        "absent": destroy,
+        "present": init,
+        "absent": destroy
     }
 
     module = AnsibleModule(argument_spec=fields)
-    is_error, has_changed, result = choice_map.get(
-        module.params['state'])(module.params)
+    result = choice_map.get(module.params['state'])(module.params)
 
-    if not is_error:
-        module.exit_json(changed=has_changed, meta=result)
+    #if not is_error:
+    module.exit_json(msg="Successfully executed Terraform command.", meta=result)
+    '''
     else:
-        module.fail_json(msg="Error deleting repo", meta=result)
+        module.fail_json(msg="Error executing Terraform command.", meta=result)
+    '''
 
 if __name__ == '__main__':
     main()

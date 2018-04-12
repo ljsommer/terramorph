@@ -1,0 +1,16 @@
+---
+- name: "Execute Terramorph init in {{ directory }}"
+  command: "/usr/bin/python /app/src/terramorph/terramorph.py {{ directory }} init"
+  delegate_to: 127.0.0.1
+  run_once: true
+
+- name: "Execute Terramorph plan in {{ directory }}"
+  command: "/usr/bin/python /app/src/terramorph/terramorph.py {{ directory }} plan"
+  delegate_to: 127.0.0.1
+  run_once: true
+  when: execute_plan
+
+- name: "Execute Terramorph apply in {{ directory }}"
+  command: "/usr/bin/python /app/src/terramorph/terramorph.py {{ directory }} apply -auto-approve"
+  delegate_to: 127.0.0.1
+  run_once: true

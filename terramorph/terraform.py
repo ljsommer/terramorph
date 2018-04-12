@@ -4,7 +4,7 @@ import os
 from subprocess import call
 
 
-def execute(argument, env):
+def execute(argument, flag, code_dir, env):
     log = logger.create_logger()
 
     binary = "/opt/terramorph/terraform"
@@ -13,4 +13,8 @@ def execute(argument, env):
     else:
         log.info("Executing %s %s within the %s environment.", binary, argument, env)
 
-    call([binary, argument])
+    if not flag:
+        call([binary, argument], cwd=code_dir)
+    else:
+        call([binary, argument, flag], cwd=code_dir)
+

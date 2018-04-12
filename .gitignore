@@ -109,3 +109,6 @@ celerybeat-schedule
 # Terraform
 .terraform/
 .terramorph/
+
+# Ansible
+*.retry

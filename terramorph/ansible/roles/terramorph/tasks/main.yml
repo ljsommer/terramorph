@@ -1,0 +1,8 @@
+---
+- name: Destroy task file
+  include: destroy.yml
+  when: destroy is defined
+
+- name: Create task file
+  include: create.yml
+  when: destroy is undefined

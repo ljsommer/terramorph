@@ -11,7 +11,7 @@ def name():
     log.debug("Environment read from TM_ENV variable as %s", env)
     return env
 
-def validate_argument(argv):
+def validate_arguments(argv):
     log = logger.create_logger()
 
     '''
@@ -40,6 +40,9 @@ def validate_argument(argv):
     ]
     '''
 
+    code_dir = '/opt/terramorph/code/'
+    flag = ""
+
     if len(argv) == 2:
         argument = argv[1]
 
@@ -49,13 +52,30 @@ def validate_argument(argv):
             sys.exit(1)
         
     elif len(argv) > 2:
-        log.warn(
-            "Terramorph does not currently support complex (more than one) arguments."
-        )
-        log.warn("Please select one of the following arguments: %s", supported_args)
-        sys.exit(1)
-    
-    else:
-        argument = "help"
+        arguments = argv
+        arguments.pop(0) # Remove the filename from the argv items
+        log.debug("Arguments: %s", arguments)
 
-    return argument
+        structure = {}
+
+        for arg in arguments:
+            if arg in supported_args:
+                structure['command'] = arg
+                argument = structure['command']
+            elif arg.startswith("-"):
+                log.debug("Terraform flag recognized: %s", arg)
+                structure['tf_argument'] = arg
+                flag = structure['tf_argument']
+            elif os.path.isdir(os.path.join(code_dir, arg)):
+                structure['directory'] = os.path.join(code_dir, arg)
+            else:
+                log.warn("An argument was found that is not able to be handled: %s", arg)
+                sys.exit(1)
+        
+        code_dir = structure['directory']
+
+    log.debug("Argument: %s", argument)
+    if flag:
+        log.debug("Terraform flag: %s", flag)
+    log.debug("Code directory: %s", code_dir)
+    return argument, flag, code_dir

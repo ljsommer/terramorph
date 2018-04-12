@@ -17,7 +17,6 @@ Check environment out of library:
 def checkout_environment(code_dir, env_name):
     log = logger.create_logger()
     env_dir = join(code_dir, 'env', env_name)
-    log.debug("Env_dir: %s", env_dir)
 
     # Library directory
     terraform_dir = join(code_dir, '.terraform/')
@@ -39,7 +38,6 @@ Check symlinks out of library:
 def checkout_symlinks(code_dir, env_name):
     log = logger.create_logger()
     env_dir = join(code_dir, 'env', env_name)
-    log.debug("Env_dir: %s", env_dir)
 
     symlink_targets = [f for f in listdir(env_dir) if isfile(join(env_dir, f))]
     log.debug("Files to be symlinked: %s", symlink_targets)

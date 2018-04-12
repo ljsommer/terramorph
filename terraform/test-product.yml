@@ -2,17 +2,26 @@
 - hosts: 127.0.0.1
   connection: local
 
-  tasks:
-  - name: "Deploying network layer: VPC"
-    terramorph:
-      apply_confirm: True
-      directory: "network/vpc/"
-      plan_only: False
-      state: "present"
+  ###
+  # This playbook is to demonstrate how to use the terramorph role to create cloud
+  # infrastructure in a particular order, and how to dismantle it in that same order.
+  #
+  # To create a segment of code, call the role and give it the directory relative to
+  # the playbook.
+  # To destroy the same segment(s) pass them in the same order as creation with the 
+  # variable "destroy" set to true.
+  # Tags are present in this example but not yet used.
+  #
+  # WARNING: Destroy is passed with a -force so you won't be prompted. Honestly this
+  # playbook should be used to *create* your complex segmented environments, not to 
+  # destroy them. That should be done by hand. Destroy functionality is present mostly
+  # for development purposes. You've been warned.
+  ###
 
-  - name: "Deploying application layer: test"
-    terramorph:
-      apply_confirm: False
-      directory: "application/test"
-      plan_only: False
-      state: "present"
+  roles:
+    # Create
+    - { role: terramorph, directory: "network/vpc",      tags: [ 'create' ] }
+    - { role: terramorph, directory: "application/test", tags: [ 'create' ] }
+    # Destroy
+    - { role: terramorph, directory: "network/vpc",      destroy: true, tags: [ 'destroy' ] }
+    - { role: terramorph, directory: "application/test", destroy: true, tags: [ 'destroy' ] }

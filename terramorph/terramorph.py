@@ -2,32 +2,32 @@
 """
 Terraform functionality wrapper utility
 """
+import os
+import sys
+sys.path.append(os.path.realpath(os.path.dirname(__file__)))
+
 import environment
 import library
 import logger
-import os
-import sys
 import terraform
-
 
 def main():
     log = logger.create_logger()
     log.info("Terramorph: Begin execution")
 
-    argument = environment.validate_argument(sys.argv)
-    code_dir = '/opt/terramorph/code/'
     env = environment.name()
+    argument, flag, code_dir = environment.validate_arguments(sys.argv)
 
     try:
         if not argument == "help":
             library.orphanage(code_dir)
-            library.checkout_environment(code_dir, env)
             symlinks = library.checkout_symlinks(code_dir, env)
-        terraform.execute(argument, env)
+            library.checkout_environment(code_dir, env)
+        terraform.execute(argument, flag, code_dir, env)
     finally:
         if not argument == "help":
             library.cleanup(code_dir, env, symlinks)
 
     log.info("Terramorph: End execution")
-    
+
 main()
