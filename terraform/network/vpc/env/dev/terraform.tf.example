@@ -1,0 +1,16 @@
+provider "aws" {
+  profile = "${var.aws_profile}"
+  region  = "${var.region}"
+}
+
+terraform {
+ required_version = ">= 0.11.0" # Or whatever version you'd like
+
+ backend "s3" { # This is where Terraform will attempt to store the statefile for this context
+   bucket         = "(bucket name goes here)"
+   encrypt        = "true"
+   key            = "(full path to statefile key)"
+   profile        = "(the name of the AWS profile from your ~/.aws/credentials file)"
+   region         = "(region you created the S3 bucket in for your TF state)"
+ }
+}

@@ -1,5 +1,5 @@
 variable "aws_profile" {
-  default = "ljsommer"
+  default = "(the name of the AWS profile from your ~/.aws/credentials file)"
 }
 
 variable "env" {
