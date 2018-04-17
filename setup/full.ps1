@@ -1,3 +1,4 @@
+$ansible_version   = "2.5.0"
 $container_aws_dir = "/root/.aws"
 $container_name    = "terramorph"
 $container_ssh_dir = "/root/.ssh"
@@ -5,13 +6,25 @@ $image_name        = "terramorph"
 $local_aws_dir     = "$home\.aws"
 $local_ssh_dir     = "$home\.ssh"
 $log_level         = "debug"
-$ps_module_dir  = "$home\Documents\WindowsPowershell\Modules\Autoload"
-$ps_profile_dir = "$home\Documents\WindowsPowershell"
+$ps_module_dir     = "$home\Documents\WindowsPowershell\Modules\Autoload"
+$ps_profile_dir    = "$home\Documents\WindowsPowershell"
 $terraform_version = "0.11.3"
+$tm_code_dir       = "/opt/terramorph/code"
+$tm_log_level      = "debug"
+$tm_env            = "dev"
 
-echo "Building Docker image: $image_name with Terraform version: ${terraform_version} and log level ${log_level}"
-docker build -t $image_name --build-arg terraform_version=$terraform_version ..
+echo ""
+echo "Building Docker image: $image_name with Ansible and Terraform"
+echo "   Ansible version: $ansible_version"
+echo "   Terraform version: $terraform_version"
+echo ""
 
+docker build -t $image_name `
+    --build-arg ansible_version=$ansible_version `
+    --build-arg terraform_version=$terraform_version `
+    ..
+
+# I really don't like working with PS functions like this, apologies at how charmless this is
 $terramorph_function = "
 Function Invoke-Terramorph {
     [CmdletBinding()]
@@ -20,29 +33,21 @@ Function Invoke-Terramorph {
         [Parameter(Mandatory=`$false,
                    Position=0)]
         [alias(`"Action`")]
-        [string]`$tf_argument
+        [string]`$tm_argument
     )
     process 
     {
-        if (`$PSBoundParameters.ContainsKey('tf_argument'))
-        {
-            docker run -i -t --rm ``
-                --name $image_name ``
-                -v `"$local_aws_dir`:$container_aws_dir`" ``
-                -v `"$local_ssh_dir`:$container_ssh_dir`" ``
-                -e log_level=`"$log_level`" ``
-                $image_name ``
-                `$tf_argument `
+        if (!(`$PSBoundParameters.ContainsKey('tm_argument'))) {
+            `$tm_argument=`"help`"
         }
-        else
-        {
-            docker run -i -t --rm ``
-                --name $image_name ``
-                -v `"$local_aws_dir`:$container_aws_dir`" ``
-                -v `"$local_ssh_dir`:$container_ssh_dir`" ``
-                -e log_level=`"$log_level`" ``
-                $image_name `
-        }
+        docker run -i -t ``
+            -e TM_LOG_LEVEL=`"$tm_log_level`" ``
+            -e TM_ENV=`"$tm_env`" ``
+            -v `"$local_aws_dir`:$container_aws_dir`" ``
+            -v `"$local_ssh_dir`:$container_ssh_dir`" ``
+            -v `"`$(Get-Location)`:$tm_code_dir`" ``
+            $image_name ``
+            `$tm_argument `
     }
 }"
 

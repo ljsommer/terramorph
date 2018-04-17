@@ -12,5 +12,7 @@ RUN pip3 install --upgrade pip \
 ENV ANSIBLE_CONFIG="/app/src/terramorph/ansible/ansible.cfg"
 
 ADD . /app/src
+RUN chmod +x /app/src/terramorph/entrypoint.sh
 
+WORKDIR '/opt/terramorph/code'
 ENTRYPOINT ["/bin/sh", "/app/src/terramorph/entrypoint.sh"]

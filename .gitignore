@@ -110,6 +110,7 @@ celerybeat-schedule
 .terraform/
 .terramorph/
 terraform.tf
+terraform.tfstate
 variables.tf
 
 # Ansible

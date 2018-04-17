@@ -62,3 +62,6 @@ This has a few advantages:
 ## Development
 * Windows: Currently the logging level (to the python) is being passed in the full.ps1. This is not ideal, but I don't want to spend a lot of time on that right now.
   * Side note: As of April 2018 I am a bit behind on Windows development so if you find a bug in the powershell setup stuff please let me know
+
+## Notes
+* The path to the playbook must be relative, not absolute. This is because the playbook is mounted into the container which will have a different directory setup
