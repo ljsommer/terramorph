@@ -40,7 +40,7 @@ Function Invoke-Terramorph {
         if (!(`$PSBoundParameters.ContainsKey('tm_argument'))) {
             `$tm_argument=`"help`"
         }
-        docker run -i -t ``
+        docker run -i -t --rm ``
             -e TM_LOG_LEVEL=`"$tm_log_level`" ``
             -e TM_ENV=`"$tm_env`" ``
             -v `"$local_aws_dir`:$container_aws_dir`" ``
