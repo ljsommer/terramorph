@@ -6,6 +6,14 @@ Abstraction tooling built in Docker for Terraform.
 
 The name of this tool is obviously pulled from Terraform, but I needed a spin on the name and thought of one of my favorite games, Final Fantasy 6 (3) and the character Terra, who has the ability to morph into a creature thus gaining new powers.
 
+
+## YouTube
+Problem statements and approach:
+https://www.youtube.com/watch?v=HGOtliV_6K8&feature=youtu.be
+
+Live demo:
+https://www.youtube.com/watch?v=U3JPMpIVue8
+
 ##
 Problem statement(s):
 1. Developer/Build server Terraform version variance (Bob is on 0.9, Lisa is on 0.10 and the Build server is on 0.8)
@@ -46,6 +54,9 @@ If you'd like to checkout how this may work in a multilayer Terraform codebase, 
 
 ## Best-practice directory structure
 In the ./terraform/ folder you'll see an example of a directory structure layout for a layer (segment) of Terraform code. There is an env directory which contains an environment named 'dev'. The files in dev get symlinked into the working directory for code execution and then unsymlinked when code execution is complete.
+
+Visual example:
+![terramorph](https://github.com/ljsommer/terramorph/blob/master/layers_segments.png?raw=true)
 
 This has a few advantages:
 * Clearly separate your environment variables
