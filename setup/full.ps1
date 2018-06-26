@@ -1,3 +1,4 @@
+$alpine_version    = "3.7"
 $ansible_version   = "2.5.0"
 $container_aws_dir = "/root/.aws"
 $container_name    = "terramorph"
@@ -20,6 +21,7 @@ echo "   Terraform version: $terraform_version"
 echo ""
 
 docker build -t $image_name `
+    --build-arg alpine_version=$alpine_version `
     --build-arg ansible_version=$ansible_version `
     --build-arg terraform_version=$terraform_version `
     ..
