@@ -1,5 +1,6 @@
 #! /bin/bash
 
+alpine_version="3.7"
 ansible_version="2.5.0"
 image_name="terramorph"
 terraform_version="0.11.3"
@@ -11,6 +12,7 @@ echo "   Terraform version: $terraform_version"
 echo ""
 
 docker build -t $image_name \
+    --build-arg alpine_version=$alpine_version \
     --build-arg ansible_version=$ansible_version \
     --build-arg terraform_version=$terraform_version \
     ..
