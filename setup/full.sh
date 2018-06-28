@@ -37,13 +37,18 @@ function terramorph () {
     else
         tm_argument=$1
     fi
+
+    # If AWS_* creds are set, export to ~/.aws/terramorph, to import in the container
+    if [[ -v AWS_ACCESS_KEY_ID ]] && [[ -v AWS_SECRET_ACCESS_KEY ]]; then
+      mkdir ${HOME}/.aws &>/dev/null && touch ${HOME}/.aws/terramorph &>/dev/null
+      echo export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID >> ${HOME}/.aws/terramorph
+      echo export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> ${HOME}/.aws/terramorph
+      if [[ -v AWS_SESSION_TOKEN ]]; then echo export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN >> ${HOME}/.aws/terramorph; fi
+    fi 
     
     docker run -i -t --rm \
         -e "TM_LOG_LEVEL=$TM_LOG_LEVEL" \
         -e "TM_ENV=$TM_ENV" \
-        -e "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" \
-        -e "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
-        -e "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" \
         -v ${HOME}/.aws/:/root/.aws/ \
         -v ${HOME}/.ssh/:/root/.ssh/ \
         -v $(pwd):/opt/terramorph/code/ \
