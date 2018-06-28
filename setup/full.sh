@@ -40,7 +40,7 @@ function terramorph () {
         echo "$TM_PROFILE"
     }
 
-    if [[ "$1" = "config" ]] || [[ ! -f ${HOME}/.terramorph/config ]] ; then
+    if [[ "$1" = "config" ]] || [[ ! -s ${HOME}/.terramorph/config ]] ; then
       export TM_PROFILE=$(config)  
       return 0 
     fi
