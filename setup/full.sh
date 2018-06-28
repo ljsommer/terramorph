@@ -93,6 +93,7 @@ function terramorph () {
         -v ${HOME}/.aws/:/root/.aws/ \
         -v ${HOME}/.ssh/:/root/.ssh/ \
         -v $(pwd):/opt/terramorph/code/ \
+        -v $TM_MODULES:/opt/terramorph/modules \
         terramorph $tm_argument
 }
 
