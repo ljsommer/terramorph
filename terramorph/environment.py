@@ -74,7 +74,7 @@ def validate_arguments(argv):
         
         code_dir = structure['directory']
 
-        # This is a commented line to demonstrate version control for my cousin
+        # This is NOT a commented line to demonstrate version control for my cousin
 
     log.debug("Argument: %s", argument)
     if flag:
